@@ -9,7 +9,7 @@ The purpose of providing HostHunter in multiple languages is to offer flexibilit
 ## Available Implementations
 
 - **JavaScript (Node.js)**: Located in the `JS-Script` folder.
-- **Python**: Located in the `Python-Script` folder.
+- **Python**: Located in the `Python-Script` folder.(Archived)
 
 Each implementation provides the same core functionality and usage, allowing users to easily switch between versions if needed.
 
