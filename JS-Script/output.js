@@ -8,35 +8,62 @@ const printTable = (results) => {
         return;
     }
 
-    // Determine the maximum column widths
-    const maxIpLength = Math.max(...results.map(row => row.ip.length), 'IP Address'.length);
-    const maxStatusLength = Math.max(...results.map(row => row.status.length), 'Status'.length);
-    const maxHostnameLength = Math.max(...results.map(row => row.hostname.length), 'Hostname'.length);
+    // Determine column widths
+    const ipWidth = Math.max('IP Address'.length, ...results.map(row => row.ip.length));
+    const statusWidth = Math.max('Status'.length, ...results.map(row => row.status.length));
+    const hostnameWidth = Math.max('Hostname'.length, ...results.map(row => row.hostname.length));
 
-    // Construct row separator based on column widths
-    const rowSeparator = `+${'-'.repeat(maxIpLength + 2)}+${'-'.repeat(maxStatusLength + 2)}+${'-'.repeat(maxHostnameLength + 2)}+`;
+    // Print header
+    const separator = `+${'-'.repeat(ipWidth + 2)}+${'-'.repeat(statusWidth + 2)}+${'-'.repeat(hostnameWidth + 2)}+`;
+    console.log(separator);
+    console.log(`| ${'IP Address'.padEnd(ipWidth)} | ${'Status'.padEnd(statusWidth)} | ${'Hostname'.padEnd(hostnameWidth)} |`);
+    console.log(separator);
 
-    // Print table header
-    console.log(rowSeparator);
-    console.log(`| ${'IP Address'.padEnd(maxIpLength)} | ${'Status'.padEnd(maxStatusLength)} | ${'Hostname'.padEnd(maxHostnameLength)} |`);
-    console.log(rowSeparator);
-
-    // Print each row with color-coded status
-    results.forEach(({ ip, status, hostname }) => {
-        const colorStatus = status === 'Success' 
-            ? chalk.green(status.padEnd(maxStatusLength)) 
-            : chalk.red(status.padEnd(maxStatusLength));
-
-        console.log(`| ${ip.padEnd(maxIpLength)} | ${colorStatus} | ${hostname.padEnd(maxHostnameLength)} |`);
-        console.log(rowSeparator);
+    // Print rows
+    results.forEach(row => {
+        const statusColor = row.status === 'Success' ? chalk.green : chalk.red;
+        console.log(`| ${row.ip.padEnd(ipWidth)} | ${statusColor(row.status.padEnd(statusWidth))} | ${row.hostname.padEnd(hostnameWidth)} |`);
+        console.log(separator);
     });
 };
 
 const saveToCSV = (results, outputFileName) => {
-    const csvData = results.map(({ ip, status, hostname }) => `${ip},${status},${hostname}`).join('\n');
-    const filePath = path.resolve(outputFileName);
+    const csvData = ['IP Address,Status,Hostname', ...results.map(row => `${row.ip},${row.status},${row.hostname}`)].join('\n');
+    const filePath = path.resolve(outputFileName || 'output.csv');
     fs.writeFileSync(filePath, csvData);
     console.log(chalk.green(`Results saved to ${filePath}`));
 };
 
-module.exports = { printTable, saveToCSV };
+const saveToHTML = (results, outputFileName) => {
+    const htmlData = `
+        <html>
+        <head>
+            <title>HostName Hunter Results</title>
+            <style>
+                table { width: 100%; border-collapse: collapse; }
+                th, td { padding: 8px; text-align: left; border: 1px solid #ddd; }
+                th { background-color: #f2f2f2; }
+            </style>
+        </head>
+        <body>
+            <h2>HostName Hunter Results</h2>
+            <table>
+                <tr><th>IP Address</th><th>Status</th><th>Hostname</th></tr>
+                ${results.map(row => `<tr><td>${row.ip}</td><td>${row.status}</td><td>${row.hostname}</td></tr>`).join('')}
+            </table>
+        </body>
+        </html>
+    `;
+    const filePath = path.resolve(outputFileName || 'output.html');
+    fs.writeFileSync(filePath, htmlData);
+    console.log(chalk.green(`Results saved to ${filePath}`));
+};
+
+const saveToJSON = (results, outputFileName) => {
+    const jsonData = JSON.stringify(results, null, 2);
+    const filePath = path.resolve(outputFileName || 'output.json');
+    fs.writeFileSync(filePath, jsonData);
+    console.log(chalk.green(`Results saved to ${filePath}`));
+};
+
+module.exports = { printTable, saveToCSV, saveToHTML, saveToJSON };
