@@ -16,7 +16,7 @@ const config = loadConfig();
         process.exit(1);
     }
 
-    console.log(`Starting HostHunter with ${ipAddresses.length} IPs, batch size ${config.batchSize}, and concurrency ${config.maxConcurrentLookups}...`);
+    console.log(`Starting HostName Hunter with ${ipAddresses.length} IPs, batch size ${config.batchSize}, and concurrency ${config.maxConcurrentLookups}...`);
 
     const results = await processInBatches(ipAddresses, config.batchSize, config.maxConcurrentLookups);
 

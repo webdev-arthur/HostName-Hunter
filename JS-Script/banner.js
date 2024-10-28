@@ -2,7 +2,7 @@ const figlet = require('figlet');
 const chalk = require('chalk');
 
 const displayBanner = () => {
-    figlet('HostHunter', (err, data) => {
+    figlet('HostName Hunter', (err, data) => {
         if (err) {
             console.log('Banner generation error:', err);
             return;

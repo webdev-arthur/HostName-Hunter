@@ -38,7 +38,7 @@ const saveToHTML = (results, outputFileName) => {
     const htmlData = `
         <html>
         <head>
-            <title>HostHunter Results</title>
+            <title>HostName Hunter Results</title>
             <style>
                 table { width: 100%; border-collapse: collapse; }
                 th, td { padding: 8px; text-align: left; border: 1px solid #ddd; }
@@ -46,7 +46,7 @@ const saveToHTML = (results, outputFileName) => {
             </style>
         </head>
         <body>
-            <h2>HostHunter Results</h2>
+            <h2>HostName Hunter Results</h2>
             <table>
                 <tr><th>IP Address</th><th>Status</th><th>Hostname</th></tr>
                 ${results.map(row => `<tr><td>${row.ip}</td><td>${row.status}</td><td>${row.hostname}</td></tr>`).join('')}
