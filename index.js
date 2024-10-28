@@ -3,6 +3,11 @@ const loadConfig = require('./config');
 const { loadInputData } = require('./inputHandler');
 const { processInBatches } = require('./dnsLookup');
 const { printTable, saveToCSV, saveToHTML, saveToJSON } = require('./output');
+const config = require('./config.json');
+if (config.plugins.geolocation) {
+    const { performGeolocationLookup } = require('./plugins/geoLookup');
+    // Use geolocation plugin
+}
 
 const config = loadConfig();
 
