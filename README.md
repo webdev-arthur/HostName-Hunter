@@ -45,16 +45,17 @@ HostHunter accepts input in two ways:
 
 ### Arguments
 
-| Argument       | Description                                                                                  |
-|----------------|----------------------------------------------------------------------------------------------|
-| `-i`           | Input IP addresses (comma-separated if multiple)                                             |
-| `-iF`          | Specify a file containing IP addresses                                                       |
-| `-o`           | Specify an output file (supported formats: CSV, JSON, HTML, or XML)                          |
-| `--format`     | Define the output format (csv, json, html, xml)                                              |
-| `--batchSize`  | Set the batch size for DNS lookups                                                           |
-| `--maxConcurrentLookups` | Define max concurrent lookups for optimized performance                            |
-| `-h` or `--help` | Display help message with information about all available arguments                        |
-----------------|----------------------------------------------------------------------------------------------
+| Argument                 | Description                                                                                 |
+|--------------------------|---------------------------------------------------------------------------------------------|
+| `-i`                     | Input IP addresses (comma-separated if multiple)                                            |
+| `-iF`                    | Specify a file containing IP addresses                                                      |
+| `-o`                     | Specify an output file (supported formats: CSV, JSON, HTML, or XML)                         |
+| `--format`               | Define the output format (csv, json, html, xml)                                             |
+| `--batchSize`            | Set the batch size for DNS lookups                                                          |
+| `--maxConcurrentLookups` | Define max concurrent lookups for optimized performance                                     |
+| `-h` or `--help`         | Display help message with information about all available arguments                         |
+|--------------------------|---------------------------------------------------------------------------------------------|
+
 ### Help Option
 To display help information, use:
 ```bash
