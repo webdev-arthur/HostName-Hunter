@@ -23,7 +23,7 @@ const performDnsLookup = async (ip, retries = 3) => {
 };
 
 // Processes a batch of lookups with a set concurrency limit
-const processBatch = async (batch, maxConcurrentLookups) => {
+const processBatch = async (batch, maxConcurrentLookups, debug = false) => {
     const lookupPromises = batch.map(ip => performDnsLookup(ip));
     const results = [];
 
@@ -32,17 +32,22 @@ const processBatch = async (batch, maxConcurrentLookups) => {
         const batchResults = await Promise.all(currentLookups);
         results.push(...batchResults);
     }
+    if (debug) {
+        console.log(`Batch processed: ${results.length} results`);
+    }
     return results;
 };
 
 // Processes IP addresses in batches
-const processInBatches = async (ipAddresses, batchSize, maxConcurrentLookups) => {
+const processInBatches = async (ipAddresses, batchSize, maxConcurrentLookups, debug = false) => {
     const allResults = [];
     const batches = createBatches(ipAddresses, batchSize);
 
     for (let i = 0; i < batches.length; i++) {
-        console.log(`Processing batch ${i + 1} of ${batches.length}...`); // Optional for debugging
-        const batchResults = await processBatch(batches[i], maxConcurrentLookups);
+        if (debug) {
+            console.log(`Processing batch ${i + 1} of ${batches.length}...`);
+        }
+        const batchResults = await processBatch(batches[i], maxConcurrentLookups, debug);
         allResults.push(...batchResults);
     }
     return allResults;

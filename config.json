@@ -1,0 +1,7 @@
+{
+    "plugins": {
+      "geolocation": true,
+      "dnsLookup": true
+    }
+  }
+  
