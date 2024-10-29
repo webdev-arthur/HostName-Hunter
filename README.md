@@ -54,7 +54,7 @@ HostHunter accepts input in two ways:
 | `--batchSize`            | Set the batch size for DNS lookups                                                          |
 | `--maxConcurrentLookups` | Define max concurrent lookups for optimized performance                                     |
 | `-h` or `--help`         | Display help message with information about all available arguments                         |
-|--------------------------|---------------------------------------------------------------------------------------------|
+
 
 ### Help Option
 To display help information, use:
