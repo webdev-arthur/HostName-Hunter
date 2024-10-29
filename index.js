@@ -1,19 +1,27 @@
-const { displayBanner } = require('./banner');
-const loadConfig = require('./config');
-const { loadInputData } = require('./inputHandler');
-const { processInBatches } = require('./dnsLookup');
-const { printTable, saveToCSV, saveToHTML, saveToJSON } = require('./output');
-const config = require('./config.json');
-if (config.plugins.geolocation) {
-    const { performGeolocationLookup } = require('./plugins/geoLookup');
-    // Use geolocation plugin
-}
+const { displayBanner } = require("./src/core/banner");
+const loadConfig = require("./src/core/config");
+const { loadInputData } = require("./src/core/inputHandler");
+const { processInBatches } = require("./src/core/dnsLookup");
+const printTable = require('./output/outputFormatter').printTable;
+
+// Import output functions
+const saveToCSV = require("./output/saveToCSV");
+const saveToHTML = require("./output/saveToHTML");
+const saveToJSON = require("./output/saveToJSON");
 
 const config = loadConfig();
 
+// Conditionally require plugins based on config
+if (config.plugins.geolocation) {
+    const { performGeolocationLookup } = require("./plugins/geoLookup");
+    // Use geolocation plugin if enabled
+}
+if (config.plugins.dnsLookup) {
+    // Any specific DNS plugin handling or setup if required
+}
+
 (async () => {
     displayBanner();
-
     const ipAddresses = await loadInputData(config);
 
     if (ipAddresses.length === 0) {
@@ -25,40 +33,36 @@ const config = loadConfig();
 
     const results = await processInBatches(ipAddresses, config.batchSize, config.maxConcurrentLookups);
 
-    // Determine output format based on config
     if (!config.outputFormat) {
-        // No output format specified, default to table output
         printTable(results);
     } else {
-        // Output format is specified
         switch (config.outputFormat) {
-            case 'csv':
+            case "csv":
                 if (config.outputFileName) {
                     saveToCSV(results, config.outputFileName);
                     console.log(`Results saved to ${config.outputFileName}`);
                 } else {
-                    printTable(results); // Show in terminal if no file name provided
+                    printTable(results);
                 }
                 break;
-            case 'html':
+            case "html":
                 if (config.outputFileName) {
                     saveToHTML(results, config.outputFileName);
                     console.log(`Results saved to ${config.outputFileName}`);
                 } else {
-                    saveToHTML(results); // Display as HTML in terminal if no file name
+                    saveToHTML(results);
                 }
                 break;
-            case 'json':
+            case "json":
                 if (config.outputFileName) {
                     saveToJSON(results, config.outputFileName);
                     console.log(`Results saved to ${config.outputFileName}`);
                 } else {
                     console.log("JSON Output:");
-                    console.log(JSON.stringify(results, null, 2)); // Display JSON in terminal if no file name
+                    console.log(JSON.stringify(results, null, 2));
                 }
                 break;
             default:
-                // If format is unknown, fallback to table output
                 console.warn(`Unknown format "${config.outputFormat}". Defaulting to table output.`);
                 printTable(results);
         }

@@ -1,5 +1,5 @@
-// outputFormatter.js
 const fs = require('fs');
+const chalk = require('chalk');
 
 const saveAsCSV = (data, filePath) => {
     const csvData = data.map(row => row.join(',')).join('\n');
@@ -68,8 +68,7 @@ function saveAsHTML(results, outputFileName) {
     console.log(chalk.green(`Results saved to ${outputFileName}`));
 }
 
-
-const saveResults = (data, format, filePath) => {
+const saveResults = (data, format = 'csv', filePath) => {
     switch (format) {
         case 'json': return saveAsJSON(data, filePath);
         case 'xml': return saveAsXML(data, filePath);
