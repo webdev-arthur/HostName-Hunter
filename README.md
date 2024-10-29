@@ -1,4 +1,4 @@
-# HostHunter - JavaScript (Node.js) Version
+# HostName Hunter - JavaScript (Node.js) Version
 
 **HostHunter** is a reverse DNS lookup tool for performing efficient DNS lookups on individual IP addresses to retrieve hostname information.
 
