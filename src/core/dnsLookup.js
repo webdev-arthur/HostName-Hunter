@@ -1,4 +1,4 @@
-const dns = require('dns').promises;
+const dns = require('dns').promises; 
 
 // Helper function to create batches without external dependencies
 const createBatches = (array, batchSize) => {
@@ -26,15 +26,20 @@ const performDnsLookup = async (ip, retries = 3) => {
 const processBatch = async (batch, maxConcurrentLookups, debug = false) => {
     const lookupPromises = batch.map(ip => performDnsLookup(ip));
     const results = [];
+    const startTime = Date.now();
 
     while (lookupPromises.length > 0) {
         const currentLookups = lookupPromises.splice(0, maxConcurrentLookups);
         const batchResults = await Promise.all(currentLookups);
         results.push(...batchResults);
     }
+
     if (debug) {
-        console.log(`Batch processed: ${results.length} results`);
+        const endTime = Date.now();
+        const batchTime = ((endTime - startTime) / 1000).toFixed(2);
+        console.log(`Batch processed with ${results.length} results in ${batchTime} seconds.`);
     }
+
     return results;
 };
 
@@ -50,6 +55,7 @@ const processInBatches = async (ipAddresses, batchSize, maxConcurrentLookups, de
         const batchResults = await processBatch(batches[i], maxConcurrentLookups, debug);
         allResults.push(...batchResults);
     }
+
     return allResults;
 };
 
