@@ -1,0 +1,82 @@
+# Node.js (JavaScript) ignores
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+
+# Python ignores
+__pycache__/
+*.py[cod]
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+pip-wheel-metadata/
+*.log
+*.sqlite3
+
+# Virtual environments
+venv/
+.env/
+.venv/
+
+# Pytest cache
+.cache/
+.pytest_cache/
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# MyPy type checker
+.mypy_cache/
+
+# Coverage reports
+htmlcov/
+.coverage
+*.cover
+*.coverage.*
+.cache
+coverage.xml
+*.coveragerc
+test_reports/
+
+# Linting and type checking
+.pylintrc
+flake8.log
+pylint.log
+mypy.log
+
+# Logs
+logs/
+*.log
+
+# Optional: Ignore dotenv files with sensitive information
+.env
+.env.local
+.env.*.local
+
+# IDE and editor specific files
+.vscode/
+.idea/
+.DS_Store
+
+# OS-specific files
+Thumbs.db
+Desktop.ini
+
+# Compiled/minified files (JavaScript)
+*.min.js
+*.min.css
+*.map
+
+# Temporary or transient files
+*.tmp
+*.temp
+~*
+
+# Exported and generated files
+output.csv
+output.json
+output.xlsx
