@@ -51,6 +51,9 @@ HostHunter accepts input in two ways:
 | `-h` or `--help`         | Display help message with information about all available arguments                         |
 
 
+## Demo
+https://github.com/user-attachments/assets/da8328fa-d7dc-4507-9899-f7fec1b69887
+
 ### Help Option
 To display help information, use:
 ```bash
