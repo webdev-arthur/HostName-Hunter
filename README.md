@@ -2,10 +2,6 @@
 
 **HostHunter** is a reverse DNS lookup tool for performing efficient DNS lookups on individual IP addresses to retrieve hostname information.
 
-## Purpose
-
-The purpose of providing HostName Hunter in multiple languages is to offer flexibility and compatibility across various platforms. Whether you prefer the JavaScript/Node.js ecosystem or Python environment, you can use HostName Hunter for efficient DNS lookups.
-
 ## Functionality Overview
 
 HostName Hunter allows you to:
@@ -14,7 +10,6 @@ HostName Hunter allows you to:
 3. Display results in a structured table with color-coded status (success or failure).
 4. Optionally save results in various formats: CSV, JSON, HTML, or XML.
 
-Refer to the specific README files within the `JS-Script` and `Python-Script` folders for installation and usage instructions for each language version.
 
 ## Features
 
@@ -25,7 +20,7 @@ Refer to the specific README files within the `JS-Script` and `Python-Script` fo
 
 ## Installation
 
-To use HostHunter in JavaScript, you need [Node.js](https://nodejs.org/) installed.
+To use HostHunter you need [Node.js](https://nodejs.org/) installed.
 
 1. Clone the repository and navigate to the project’s directory:
     ```bash
@@ -59,32 +54,32 @@ HostHunter accepts input in two ways:
 ### Help Option
 To display help information, use:
 ```bash
-node hosthunter.js -h
+node index.js -h
 ```
 
 ## Examples
 
 1. Single IP Lookup:
 ```bash
-node hosthunter.js -i 8.8.8.8
+node index.js -i 8.8.8.8
 ```
 
 2. Multiple IPs from Command Line:
 ```bash
-node hosthunter.js -i 8.8.8.8,1.1.1.1,192.168.1.1
+node index.js -i 8.8.8.8,1.1.1.1,192.168.1.1
 ```
 
 3. Lookup from a File:
 ```bash
-node hosthunter.js -iF ./sample_ips.txt
+node index.js -iF ./sample_ips.txt
 ```
 
 4. Save Output to CSV:
 ```bash
-node hosthunter.js -i 8.8.8.8,1.1.1.1 -o results.csv
+node index.js -i 8.8.8.8,1.1.1.1 -o results.csv
 ```
 
 5. Save Output in JSON:
 ```bash
-node hosthunter.js -i 8.8.8.8,1.1.1.1 --format json -o results.json
+node index.js -i 8.8.8.8,1.1.1.1 --format json -o results.json
 ```

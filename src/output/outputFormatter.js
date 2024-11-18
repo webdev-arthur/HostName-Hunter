@@ -1,9 +1,7 @@
 const fs = require('fs');
 const chalk = require('chalk');
 
-// Function to print results in a dynamically sized table with color-coded output
 const printTable = (results) => {
-    // Determine column widths dynamically based on the longest content in each column
     const maxIpLength = Math.max(...results.map(result => result.ip.length), 'IP Address'.length);
     const maxStatusLength = Math.max(...results.map(result => result.status.length), 'Status'.length);
     const maxHostnameLength = Math.max(...results.map(result => (result.hostname || 'N/A').length), 'Hostname'.length);
@@ -13,17 +11,14 @@ const printTable = (results) => {
     const maxServerLength = Math.max(...results.map(result => (result.headers?.server || 'N/A').length), 'Server'.length);
     const maxLocationLength = Math.max(...results.map(result => (result.headers?.location || 'N/A').length), 'Location'.length);
 
-    // Define the table divider based on column widths
     const divider = `+${'-'.repeat(maxIpLength + 2)}+${'-'.repeat(maxStatusLength + 2)}+${'-'.repeat(maxHostnameLength + 2)}+${'-'.repeat(maxIssuerLength + 2)}+${'-'.repeat(maxValidFromLength + 2)}+${'-'.repeat(maxValidToLength + 2)}+${'-'.repeat(maxServerLength + 2)}+${'-'.repeat(maxLocationLength + 2)}+`;
     console.log(chalk.cyan(divider));
 
-    // Print the header
     console.log(
         chalk.cyan(`| ${'IP Address'.padEnd(maxIpLength)} | ${'Status'.padEnd(maxStatusLength)} | ${'Hostname'.padEnd(maxHostnameLength)} | ${'Issuer'.padEnd(maxIssuerLength)} | ${'Valid From'.padEnd(maxValidFromLength)} | ${'Valid To'.padEnd(maxValidToLength)} | ${'Server'.padEnd(maxServerLength)} | ${'Location'.padEnd(maxLocationLength)} |`)
     );
     console.log(chalk.cyan(divider));
 
-    // Print each row with color-coded status
     results.forEach(result => {
         const statusColor = result.status === 'Success' ? chalk.green : chalk.red;
         const issuer = result.sslCertificate?.issuer || 'N/A';
@@ -41,20 +36,17 @@ const printTable = (results) => {
 };
 
 
-// Function to save results as CSV
 const saveAsCSV = (data, filePath) => {
     const csvData = data.map(row => row.join(',')).join('\n');
     fs.writeFileSync(filePath, csvData);
     console.log(`Results saved in CSV format at: ${filePath}`);
 };
 
-// Function to save results as JSON
 const saveAsJSON = (data, filePath) => {
     fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
     console.log(`Results saved in JSON format at: ${filePath}`);
 };
 
-// Function to save results as XML
 const saveAsXML = (data, filePath) => {
     let xmlData = `<?xml version="1.0" encoding="UTF-8"?>\n<results>\n`;
     data.forEach(row => {
@@ -69,7 +61,6 @@ const saveAsXML = (data, filePath) => {
     console.log(`Results saved in XML format at: ${filePath}`);
 };
 
-// Function to save results as HTML
 const saveAsHTML = (results, outputFileName) => {
     const htmlContent = `
 <!DOCTYPE html>

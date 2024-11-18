@@ -1,10 +1,8 @@
-// src/plugins/headerAnalysis.js
 const http = require('http');
 const https = require('https');
 
-const TIMEOUT = 5000; // 5 seconds timeout
+const TIMEOUT = 5000; 
 
-// Function to fetch HTTP headers for a given IP
 async function fetchHttpHeaders(ip) {
     const headersData = {
         ip,
@@ -14,7 +12,6 @@ async function fetchHttpHeaders(ip) {
         securityHeaders: {}
     };
 
-    // Helper function to make request and retrieve headers
     const requestHeaders = (protocol) => {
         return new Promise((resolve) => {
             const request = protocol.get(
@@ -24,7 +21,6 @@ async function fetchHttpHeaders(ip) {
                     headersData.xPoweredBy = response.headers['x-powered-by'] || 'N/A';
                     headersData.location = response.headers['location'] || 'N/A';
 
-                    // Collect security-related headers
                     headersData.securityHeaders = {
                         hsts: response.headers['strict-transport-security'] || 'N/A',
                         csp: response.headers['content-security-policy'] || 'N/A',
@@ -46,12 +42,11 @@ async function fetchHttpHeaders(ip) {
         });
     };
 
-    // Try HTTPS first, fall back to HTTP if it fails
     const httpsResult = await requestHeaders(https);
     if (httpsResult) return httpsResult;
 
     const httpResult = await requestHeaders(http);
-    return httpResult || headersData; // Return gathered headers or default structure
+    return httpResult || headersData; 
 }
 
 module.exports = { fetchHttpHeaders };

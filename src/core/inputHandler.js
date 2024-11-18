@@ -4,12 +4,10 @@ const path = require('path');
 const loadInputData = async (config) => {
     let ipAddresses = [];
 
-    // Parse inline IPs if provided
     if (config.inlineIPs) {
         ipAddresses = config.inlineIPs.split(',').map(ip => ip.trim());
     }
 
-    // Parse IPs from file if file path is provided
     if (config.inputFilePath) {
         const filePath = path.resolve(config.inputFilePath);
         if (!fs.existsSync(filePath)) {
@@ -22,7 +20,6 @@ const loadInputData = async (config) => {
         ipAddresses = ipAddresses.concat(fileIPs);
     }
 
-    // Validate if we have IP addresses after parsing
     if (ipAddresses.length === 0) {
         console.error("No IP addresses provided. Use inline input or provide a file path.");
         process.exit(1);

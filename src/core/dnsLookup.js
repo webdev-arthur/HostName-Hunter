@@ -1,6 +1,5 @@
 const dns = require('dns').promises; 
 
-// Helper function to create batches without external dependencies
 const createBatches = (array, batchSize) => {
     const batches = [];
     for (let i = 0; i < array.length; i += batchSize) {
@@ -9,7 +8,6 @@ const createBatches = (array, batchSize) => {
     return batches;
 };
 
-// Function to perform DNS lookup with retries
 const performDnsLookup = async (ip, retries = 3) => {
     try {
         const hostnames = await dns.reverse(ip);
@@ -22,7 +20,6 @@ const performDnsLookup = async (ip, retries = 3) => {
     }
 };
 
-// Processes a batch of lookups with a set concurrency limit
 const processBatch = async (batch, maxConcurrentLookups, debug = false) => {
     const lookupPromises = batch.map(ip => performDnsLookup(ip));
     const results = [];
@@ -43,7 +40,6 @@ const processBatch = async (batch, maxConcurrentLookups, debug = false) => {
     return results;
 };
 
-// Processes IP addresses in batches
 const processInBatches = async (ipAddresses, batchSize, maxConcurrentLookups, debug = false) => {
     const allResults = [];
     const batches = createBatches(ipAddresses, batchSize);

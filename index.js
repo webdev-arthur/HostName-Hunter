@@ -2,14 +2,13 @@ const { displayBanner } = require("./src/core/banner");
 const loadConfig = require("./src/core/config");
 const { loadInputData } = require("./src/core/inputHandler");
 const { processInBatches } = require("./src/core/dnsLookup");
-const { fetchSSLCertificateDetails } = require("./src/core/sslCertificate"); // Import SSL fetching function
+const { fetchSSLCertificateDetails } = require("./src/core/sslCertificate");
 const { saveResults } = require("./src/output/outputFormatter");
 const { fetchHttpHeaders } = require("./src/core/headerAnalysis");
 
-// List of ports to check for SSL/TLS certificates
+
 const SSL_PORTS = [21, 25, 443, 993, 8443, 465, 995];
 
-// Check for help argument first
 const args = process.argv.slice(2);
 if (args.includes("-h") || args.includes("--help")) {
   console.log(`
@@ -47,12 +46,11 @@ function stopAnimation(interval) {
   process.stdout.write("\r");
 }
 
-// Load configuration and display banner
 const config = loadConfig();
 displayBanner();
 
 (async () => {
-  const startTime = Date.now(); // Track start time
+  const startTime = Date.now(); 
   const ipAddresses = await loadInputData(config);
 
   if (ipAddresses.length === 0) {
@@ -68,23 +66,18 @@ displayBanner();
 
   const animationInterval = startLoadingBar("Processing IP addresses");
 
-  // Process IPs in batches and fetch results with console feedback
   let results = await processInBatches(
     ipAddresses,
     config.batchSize,
     config.maxConcurrentLookups
   );
 
-  // Fetch SSL/TLS details and HTTP headers if enabled
   results = await Promise.all(
     results.map(async (result) => {
       if (result.status === "Success") {
         try {
-          // Fetch SSL certificate details
           const sslData = await fetchSSLCertificateDetails(result.ip);
           result.sslCertificate = sslData;
-
-          // Fetch HTTP headers
           const headersData = await fetchHttpHeaders(result.ip);
           result.headers = headersData;
         } catch (err) {
@@ -120,19 +113,16 @@ displayBanner();
 
   stopAnimation(animationInterval);
 
-  // Output results in specified format
   if (!config.outputFormat) {
     saveResults(results, "table");
   } else {
     saveResults(results, config.outputFormat, config.outputFileName);
   }
 
-  // Calculate and display process completion time
   const endTime = Date.now();
   const elapsedTime = new Date(endTime - startTime).toISOString().substr(11, 8);
   console.log(`\nProcess completed in ${elapsedTime}.`);
 
-  // Add space after the table and exit
-  console.log("\n"); // Add extra space for readability
-  setTimeout(() => process.exit(0), 100); // Exit after a short delay
+  console.log("\n");
+  setTimeout(() => process.exit(0), 100);
 })();
