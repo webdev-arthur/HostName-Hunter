@@ -52,7 +52,9 @@ HostHunter accepts input in two ways:
 
 
 ## Demo
-https://github.com/user-attachments/assets/da8328fa-d7dc-4507-9899-f7fec1b69887
+https://github.com/user-attachments/assets/06126ad7-23d9-4a1f-92b1-b27516578bf7
+
+
 
 ### Help Option
 To display help information, use:
