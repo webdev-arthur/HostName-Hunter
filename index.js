@@ -6,9 +6,6 @@ const { fetchSSLCertificateDetails } = require("./src/core/sslCertificate");
 const { saveResults } = require("./src/output/outputFormatter");
 const { fetchHttpHeaders } = require("./src/core/headerAnalysis");
 
-
-const SSL_PORTS = [21, 25, 443, 993, 8443, 465, 995];
-
 const args = process.argv.slice(2);
 if (args.includes("-h") || args.includes("--help")) {
   console.log(`
@@ -27,19 +24,19 @@ Options:
 }
 
 function startLoadingBar(message, length = 20) {
-    let progress = 0;
-    const interval = setInterval(() => {
-      const filled = "=".repeat(progress);
-      const empty = " ".repeat(length - progress);
-      process.stdout.write(
-        `\r${message} [${filled}${empty}] ${Math.round(
-          (progress / length) * 100
-        )}% `
-      );
-      progress = (progress + 1) % (length + 1);
-    }, 200);
-    return interval;
-  }
+  let progress = 0;
+  const interval = setInterval(() => {
+    const filled = "=".repeat(progress);
+    const empty = " ".repeat(length - progress);
+    process.stdout.write(
+      `\r${message} [${filled}${empty}] ${Math.round(
+        (progress / length) * 100
+      )}% `
+    );
+    progress = (progress + 1) % (length + 1);
+  }, 200);
+  return interval;
+}
 
 function stopAnimation(interval) {
   clearInterval(interval);
@@ -50,7 +47,7 @@ const config = loadConfig();
 displayBanner();
 
 (async () => {
-  const startTime = Date.now(); 
+  const startTime = Date.now();
   const ipAddresses = await loadInputData(config);
 
   if (ipAddresses.length === 0) {
