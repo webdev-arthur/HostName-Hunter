@@ -20,7 +20,7 @@ HostName Hunter allows you to:
 
 ## Installation
 
-To use HostHunter you need [Node.js](https://nodejs.org/) installed.
+To use HostName Hunter you need [Node.js](https://nodejs.org/) installed.
 
 1. Clone the repository and navigate to the project’s directory:
     ```bash
@@ -34,7 +34,7 @@ To use HostHunter you need [Node.js](https://nodejs.org/) installed.
 
 ## Usage
 
-HostHunter accepts input in two ways:
+HostName Hunter accepts input in two ways:
 1. **Command Line**: Provide IP addresses directly as a single or comma-separated list.
 2. **File**: Specify a file containing a list of IP addresses, each on a new line.
 
