@@ -1,58 +1,60 @@
-const dns = require('dns').promises; 
+import dns from 'dns/promises';
 
-const createBatches = (array, batchSize) => {
-    const batches = [];
-    for (let i = 0; i < array.length; i += batchSize) {
-        batches.push(array.slice(i, i + batchSize));
+/**
+ * Performs a reverse DNS lookup for a single IP address with a retry mechanism.
+ * @param {string} ip - The IP address to look up.
+ * @param {number} [retries=3] - The number of times to retry on failure.
+ * @returns {Promise<object>} A promise that resolves with the lookup result.
+ */
+async function performDnsLookup(ip, retries = 3) {
+  try {
+    const hostnames = await dns.reverse(ip);
+    return { ip, status: 'Success', hostname: hostnames.join(', ') };
+  } catch (err) {
+  
+    if (retries > 0) {
+      return performDnsLookup(ip, retries - 1);
     }
-    return batches;
-};
+    return { ip, status: 'Failed', hostname: 'N/A', error: err.message };
+  }
+}
 
-const performDnsLookup = async (ip, retries = 3) => {
-    try {
-        const hostnames = await dns.reverse(ip);
-        return { ip, status: 'Success', hostname: hostnames.join(', ') };
-    } catch (err) {
-        if (retries > 0) {
-            return performDnsLookup(ip, retries - 1);
-        }
-        return { ip, status: 'Failed', hostname: `Error: ${err.message}` };
-    }
-};
+/**
+ * Processes a list of IP addresses concurrently using a worker pool pattern.
+ *
+ * This function ensures that no more than `maxConcurrentLookups` are running at any given moment.
+ *
+ * @param {string[]} ipAddresses - An array of IP addresses to process.
+ * @param {number} maxConcurrentLookups - The maximum number of lookups to run in parallel.
+ * @returns {Promise<object[]>} A promise that resolves to an array of all lookup results.
+ */
+export async function processInBatches(ipAddresses, maxConcurrentLookups) {
+  const results = [];
+  const ipQueue = [...ipAddresses]; 
 
-const processBatch = async (batch, maxConcurrentLookups, debug = false) => {
-    const lookupPromises = batch.map(ip => performDnsLookup(ip));
-    const results = [];
-    const startTime = Date.now();
-
-    while (lookupPromises.length > 0) {
-        const currentLookups = lookupPromises.splice(0, maxConcurrentLookups);
-        const batchResults = await Promise.all(currentLookups);
-        results.push(...batchResults);
-    }
-
-    if (debug) {
-        const endTime = Date.now();
-        const batchTime = ((endTime - startTime) / 1000).toFixed(2);
-        console.log(`Batch processed with ${results.length} results in ${batchTime} seconds.`);
-    }
-
-    return results;
-};
-
-const processInBatches = async (ipAddresses, batchSize, maxConcurrentLookups, debug = false) => {
-    const allResults = [];
-    const batches = createBatches(ipAddresses, batchSize);
-
-    for (let i = 0; i < batches.length; i++) {
-        if (debug) {
-            console.log(`Processing batch ${i + 1} of ${batches.length}...`);
-        }
-        const batchResults = await processBatch(batches[i], maxConcurrentLookups, debug);
-        allResults.push(...batchResults);
+  const run = async () => {
+    if (ipQueue.length === 0) {
+      return;
     }
 
-    return allResults;
-};
+    const ip = ipQueue.shift(); 
+    const result = await performDnsLookup(ip);
+    results.push(result);
 
-module.exports = { processInBatches };
+    await run();
+  };
+
+ 
+  const activeWorkers = [];
+  const workerCount = Math.min(ipAddresses.length, maxConcurrentLookups);
+
+ 
+  for (let i = 0; i < workerCount; i++) {
+    activeWorkers.push(run());
+  }
+
+  
+  await Promise.all(activeWorkers);
+
+  return results;
+}

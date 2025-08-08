@@ -1,0 +1,12 @@
+{
+  "plugins": {
+    "geolocation": false,
+    "dnsLookup": true
+  },
+  "defaults": {
+    "batchSize": 10,
+    "maxConcurrentLookups": 5,
+    "outputFormat": "card",
+    "timeout": 5000
+  }
+}
