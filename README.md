@@ -19,9 +19,6 @@
 
 The tool presents data in a clean, sorted table. Failures are automatically grouped at the bottom, and their rows are colored red for high visibility.
 
-![HostName Hunter Demo Screenshot](https://i.imgur.com/your-new-screenshot-url.png)
-*(Recommendation: Replace the above URL with a new screenshot of your final table output)*
-
 ## Installation
 
 To use HostName Hunter, you need [Node.js](https://nodejs.org/) (v18.x or newer) installed.
