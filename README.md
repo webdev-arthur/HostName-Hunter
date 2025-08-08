@@ -1,90 +1,92 @@
-# HostName Hunter - JavaScript (Node.js)
+# HostName Hunter v2.0
 
-**HostName Hunter** is a reverse DNS lookup tool for performing efficient DNS lookups on individual IP addresses to retrieve hostname information.
+![Node.js](https://img.shields.io/badge/Node.js-18.x+-green.svg)
+![Dependencies](https://img.shields.io/badge/dependencies-up%20to%20date-brightgreen.svg)
+![License](https://img.shields.io/badge/license-ISC-blue.svg)
 
-## Functionality Overview
+**HostName Hunter** is a powerful and fast command-line tool for network reconnaissance. It takes a list of IP addresses and performs a comprehensive analysis, including reverse DNS lookups, SSL/TLS certificate details, and HTTP header inspection.
 
-HostName Hunter allows you to:
-1. Perform reverse DNS lookups for individual IP addresses (CIDR ranges are not supported).
-2. Accept IP input from the command line or via a file.
-3. Display results in a structured table with color-coded status (success or failure).
-4. Optionally save results in various formats: CSV, JSON, HTML, or XML.
+## Key Features
 
+-   **Multi-Faceted Analysis:** Gathers data from three sources: DNS records, SSL/TLS certificates, and HTTP server headers.
+-   **High-Performance:** Uses asynchronous, concurrent lookups to process large lists of IPs quickly.
+-   **Polished Terminal UI:** Displays results in a clean, dynamically sized, and color-coded table for immediate readability. Failed lookups and expiring certificates are highlighted automatically.
+-   **Flexible Input:** Accepts IP addresses directly from the command line or from a file.
+-   **Data Export:** Save the full results to structured files like `JSON` or `CSV` for reporting or further analysis.
+-   **Intuitive CLI:** Designed with simple, easy-to-remember command-line flags and aliases.
 
-## Features
+## Terminal Output
 
-- **Reverse DNS Lookup**: Provides hostname information for each IP address.
-- **Flexible Input**: Accepts IPs from the command line or from a file.
-- **Formatted Output**: Displays results in a structured table with color-coded status.
-- **Export Options**: Save results in multiple formats including CSV, JSON, HTML, or XML.
+The tool presents data in a clean, sorted table. Failures are automatically grouped at the bottom, and their rows are colored red for high visibility.
+
+![HostName Hunter Demo Screenshot](https://i.imgur.com/your-new-screenshot-url.png)
+*(Recommendation: Replace the above URL with a new screenshot of your final table output)*
 
 ## Installation
 
-To use HostName Hunter you need [Node.js](https://nodejs.org/) installed.
+To use HostName Hunter, you need [Node.js](https://nodejs.org/) (v18.x or newer) installed.
 
-1. Clone the repository and navigate to the project’s directory:
+1.  Clone the repository and navigate to the project’s directory:
     ```bash
+    git clone https://github.com/your-username/HostName-Hunter.git
     cd HostName-Hunter
     ```
 
-2. Install dependencies:
+2.  Install the dependencies:
     ```bash
     npm install
     ```
 
 ## Usage
 
-HostName Hunter accepts input in two ways:
-1. **Command Line**: Provide IP addresses directly as a single or comma-separated list.
-2. **File**: Specify a file containing a list of IP addresses, each on a new line.
+You can now run the tool using `node .` or `node index.js`.
 
-### Arguments
+### Command-Line Options
 
-| Argument                 | Description                                                                                 |
-|--------------------------|---------------------------------------------------------------------------------------------|
-| `-i`                     | Input IP addresses (comma-separated if multiple)                                            |
-| `-iF`                    | Specify a file containing IP addresses                                                      |
-| `-o`                     | Specify an output file (supported formats: CSV, JSON, HTML, or XML)                         |
-| `--format`               | Define the output format (csv, json, html, xml)                                             |
-| `--batchSize`            | Set the batch size for DNS lookups                                                          |
-| `--maxConcurrentLookups` | Define max concurrent lookups for optimized performance                                     |
-| `-h` or `--help`         | Display help message with information about all available arguments                         |
-
-
-## Demo
-https://github.com/user-attachments/assets/06126ad7-23d9-4a1f-92b1-b27516578bf7
-
-
-
-### Help Option
-To display help information, use:
-```bash
-node index.js -h
-```
+| Argument                 | Aliases                         | Description                                            |
+| ------------------------ | ------------------------------- | ------------------------------------------------------ |
+| **Input Options**        |                                 |                                                        |
+| `--ip`                   | `-i`, `--inlineIPs`             | Provide a comma-separated list of IPs directly.        |
+| `--file`                 | `-f`, `--iF`, `--inputFilePath` | Provide a path to a file containing IPs (one per line).|
+| **Output Options**       |                                 |                                                        |
+| `--outputFileName`       | `-o`                            | Save results to a file. Format (`.json`, `.csv`) is inferred. |
+| `--verbose`              | `-v`                            | Show extra columns in the table (SSL details, etc.).   |
+| **Performance Options**  |                                 |                                                        |
+| `--batchSize`            |                                 | Set the batch size for DNS lookups. (Default: 10)      |
+| `--maxConcurrentLookups` |                                 | Define max concurrent lookups. (Default: 5)            |
+| **General Options**      |                                 |                                                        |
+| `--help`                 | `-h`                            | Display the help menu.                                 |
 
 ## Examples
 
-1. Single IP Lookup:
+#### 1. Basic lookup from a file (most common)
+
 ```bash
-node index.js -i 8.8.8.8
+node . --file ./test_IPs.txt
 ```
 
-2. Multiple IPs from Command Line:
+#### 2. Lookup with verbose output to see SSL details
+
 ```bash
-node index.js -i 8.8.8.8,1.1.1.1,192.168.1.1
+node . -f ./test_IPs.txt -v
 ```
 
-3. Lookup from a File:
+#### 3. Lookup using inline IP addresses
+
 ```bash
-node index.js -iF ./sample_ips.txt
+node . --ip "8.8.8.8,9.9.9.9,1.1.1.1"
 ```
 
-4. Save Output to CSV:
+#### 4. Saving results to a JSON file
+
+The output format is determined automatically by the file extension.
+
 ```bash
-node index.js -i 8.8.8.8,1.1.1.1 -o results.csv
+node . -f ./test_IPs.txt -o results.json
 ```
 
-5. Save Output in JSON:
+#### 5. Saving results to a CSV file
+
 ```bash
-node index.js -i 8.8.8.8,1.1.1.1 --format json -o results.json
+node . -f ./test_IPs.txt -o results.csv -v
 ```
